@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1389184707 source:/home/olivier/git/Bas-Relief-Creator/BasRelief/main.cpp
+	<iostream>
+	<fstream>
+	<string>
+
