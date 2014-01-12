@@ -11,7 +11,8 @@ public class TrianglePlot {
 	}
 
 	public void plot(int x, int y, double value) {
-		g.setColor(new java.awt.Color(255,255,255,(int)value));
+		int alpha = Math.min(255, Math.max(0, (int) (10*value)));
+		g.setColor(new java.awt.Color(255,255,255,alpha));
 		g.drawRect(x, y, 1, 1);
 	}
 
