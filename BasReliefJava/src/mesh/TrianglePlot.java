@@ -11,7 +11,7 @@ public class TrianglePlot {
 	}
 
 	public void plot(int x, int y, double value) {
-		g.setColor(new java.awt.Color(255,255,255,100));
+		g.setColor(new java.awt.Color(255,255,255,(int)value));
 		g.drawRect(x, y, 1, 1);
 	}
 
@@ -37,24 +37,30 @@ public class TrianglePlot {
 	/*
 	 * requires that yB != yC == yA
 	 */
-	public void fillTopTri(double x2, double x1, double y1, double x3, double y3) {
+	public void fillTopTri(double x2, double x1, double y1, double x3, double y3, double v1, double v2, double v3) {
 		double dBC = (x3-x2)/(y3-y1); double xCB = x2;
+		double dvBC = (v3-v2)/(y3-y1); double vCB = v2;
 		double dAB = (x3-x1)/(y3-y1); double xCA = x1;
+		double dvAB = (v3-v1)/(y3-y1); double vCA = v1;
 		for(double y= y1; y<y3;y++) {
-			fillLine(y,xCB,xCA,42,42);
+			fillLine(y,xCB,xCA,vCB,vCA);
 			xCB+=dBC; xCA+=dAB;
+			vCB+=dvBC; vCA+=dvAB;
 		}
 	}
 
 	/*
 	 * requires that yA != yC ==yB
 	 */
-	public void fillBotTri(double x2, double x3, double y3, double y1, double x1) {
+	public void fillBotTri(double x2, double x3, double y3, double y1, double x1, double v1, double v2, double v3) {
 		double dCA = (x2-x1)/(y3-y1); double xCA = x2;
+		double dvCA = (v2-v1)/(y3-y1); double vCA = v2;
 		double dBA = (x1-x3)/(y1-y3); double xBA = x3;
+		double dvBA = (v1-v3)/(y1-y3); double vBA = v3;
 		for(double y=y3; y>y1;y--) {
-			fillLine(y,xCA,xBA,42,42);
+			fillLine(y,xCA,xBA,vCA,vBA);
 			xCA-=dCA; xBA-=dBA;
+			vCA-=dvCA; vBA-=dvBA;
 		}
 	}
 
@@ -63,15 +69,17 @@ public class TrianglePlot {
 		System.out.println(tri.print());
 		double x1=tri.x1, x2=tri.x2, x3=tri.x3;
 		double y1=tri.y1, y2=tri.y2, y3=tri.y3;
+		double v1=tri.v1, v2=tri.v2, v3=tri.v3;
 		if(Math.abs(y3-y2)<=1) {
 			if(Math.abs(y3-y1)<=1) { fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),42,42); }
-			else { fillTopTri(x2,x1,y1,x3,y3); }
+			else { fillTopTri(x2,x1,y1,x3,y3,v1,v2,v3); }
 		}
-		else if(Math.abs(y2-y1)<=1) { fillBotTri(x2,x3,y3,y1,x1);}
+		else if(Math.abs(y2-y1)<=1) { fillBotTri(x2,x3,y3,y1,x1,v1,v2,v3);}
 		else {
 			double x4 = x1 + ((x3-x1)*(y2-y1))/(y3-y1);
-			fillBotTri(x2,x4,y2,y1,x1);
-			fillTopTri(x2,x4,y2,x3,y3);
+			double v4 = v1 + ((v3-v1)*(y2-y1))/(y3-y1);
+			fillBotTri(x2,x4,y2,y1,x1,v1,v2,v4);
+			fillTopTri(x2,x4,y2,x3,y3,v4,v2,v3);
 		}
 	}
 }

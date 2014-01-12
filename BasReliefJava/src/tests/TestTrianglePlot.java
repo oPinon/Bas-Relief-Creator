@@ -16,10 +16,11 @@ public class TestTrianglePlot {
 	}
 
 	static void testSort() {
-		Triangle tri = new Triangle(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random());
+		Triangle tri = new Triangle(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),0,0,0);
 		System.out.println("Not sorted :\n"+tri.print());
 		tri.sortY();
 		System.out.println("Sorted :\n"+tri.print());
+		if(tri.y3>=tri.y2&&tri.y2>=tri.y1) { System.out.println("\nRight result"); } else { System.out.println("\nBUGGED :("); }
 	}
 	
 	static void testPlot() throws IOException {
@@ -37,7 +38,7 @@ public class TestTrianglePlot {
 		x3=300*Math.random(); x2=300*Math.random(); x1=300*Math.random(); y1=100*Math.random(); y2=y1+200*Math.random();
 		triPlot.fillBotTri(x3,x2,y2,y1,x1);*/
 		
-		Triangle tri = new Triangle(200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random());
+		Triangle tri = new Triangle(200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random());
 		//Triangle tri = new Triangle(100,150,154,150,23.4,180);
 		triPlot.fillTriangle(tri);
 		
