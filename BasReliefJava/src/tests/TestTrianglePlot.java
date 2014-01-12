@@ -31,11 +31,14 @@ public class TestTrianglePlot {
 		/*triPlot.fillLine(100, 43.1, 84.2, 4.3, 201.2);
 		triPlot.fillLine(200, 234.91, 94.75, 0.2, 254.1);
 		
-		triPlot.fillTopTri(10.2, 293.4, 12.4, 245.3, 283.1);
+		double x3=300*Math.random(), x1=300*Math.random(), y1=100*Math.random(), x2=300*Math.random(), y2=y1+200*Math.random();
+		triPlot.fillTopTri(x3,x1,y1,x2,y2);
 		
-		triPlot.fillBotTri(12.4, 246.2, 248, 14.3, 45.3);*/
+		x3=300*Math.random(); x2=300*Math.random(); x1=300*Math.random(); y1=100*Math.random(); y2=y1+200*Math.random();
+		triPlot.fillBotTri(x3,x2,y2,y1,x1);*/
 		
-		Triangle tri = new Triangle(300*Math.random(),300*Math.random(),300*Math.random(),300*Math.random(),300*Math.random(),300*Math.random());
+		Triangle tri = new Triangle(200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random(),200*Math.random());
+		//Triangle tri = new Triangle(100,150,154,150,23.4,180);
 		triPlot.fillTriangle(tri);
 		
 		g.dispose();

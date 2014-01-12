@@ -37,10 +37,10 @@ public class TrianglePlot {
 	/*
 	 * requires that yB != yC == yA
 	 */
-	public void fillTopTri(double xC, double xA, double yA, double xB, double yB) {
-		double dBC = (xB-xC)/(yB-yA); double xCB = xC;
-		double dAB = (xB-xA)/(yB-yA); double xCA = xA;
-		for(double y= yA; y<yB;y++) {
+	public void fillTopTri(double x2, double x1, double y1, double x3, double y3) {
+		double dBC = (x3-x2)/(y3-y1); double xCB = x2;
+		double dAB = (x3-x1)/(y3-y1); double xCA = x1;
+		for(double y= y1; y<y3;y++) {
 			fillLine(y,xCB,xCA,42,42);
 			xCB+=dBC; xCA+=dAB;
 		}
@@ -49,10 +49,10 @@ public class TrianglePlot {
 	/*
 	 * requires that yA != yC ==yB
 	 */
-	public void fillBotTri(double xC, double xB, double yB, double yA, double xA) {
-		double dCA = (xC-xA)/(yB-yA); double xCA = xC;
-		double dBA = (xA-xB)/(yA-yB); double xBA = xB;
-		for(double y=yB; y>yA;y--) {
+	public void fillBotTri(double x2, double x3, double y3, double y1, double x1) {
+		double dCA = (x2-x1)/(y3-y1); double xCA = x2;
+		double dBA = (x1-x3)/(y1-y3); double xBA = x3;
+		for(double y=y3; y>y1;y--) {
 			fillLine(y,xCA,xBA,42,42);
 			xCA-=dCA; xBA-=dBA;
 		}
@@ -60,17 +60,18 @@ public class TrianglePlot {
 
 	public void fillTriangle(Triangle tri) {
 		tri.sortY();
+		System.out.println(tri.print());
 		double x1=tri.x1, x2=tri.x2, x3=tri.x3;
 		double y1=tri.y1, y2=tri.y2, y3=tri.y3;
-		if(y1==y3) {
-			if(y3==y2) { fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),42,42); }
-			else { fillTopTri(x3,x1,y1,x2,y2); }
+		if(Math.abs(y3-y2)<=1) {
+			if(Math.abs(y3-y1)<=1) { fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),42,42); }
+			else { fillTopTri(x2,x1,y1,x3,y3); }
 		}
-		else if(y3==y2) { fillBotTri(x3,x2,y2,y1,x1); }
+		else if(Math.abs(y2-y1)<=1) { fillBotTri(x2,x3,y3,y1,x1);}
 		else {
-			double x4 = x1 + ((x2-x1)*(y3-y1))/(y2-y1);
-			fillBotTri(x4,x3,y3,y1,x1);
-			fillTopTri(x3,x1,y1,x4,y3);
+			double x4 = x1 + ((x3-x1)*(y2-y1))/(y3-y1);
+			fillBotTri(x2,x4,y2,y1,x1);
+			fillTopTri(x2,x4,y2,x3,y3);
 		}
 	}
 }
