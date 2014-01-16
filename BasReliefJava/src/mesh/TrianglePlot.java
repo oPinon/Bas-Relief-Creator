@@ -13,7 +13,7 @@ public class TrianglePlot {
 	public void plot(int x, int y, double value) {
 		if(value>buffer.get(x, y)) { buffer.set(x, y, value); }
 	}
-	
+
 	public ZBuffer getZBuffer() { return buffer; }
 
 	/*
@@ -69,17 +69,31 @@ public class TrianglePlot {
 		tri.sortY();
 		double x1=tri.x1, x2=tri.x2, x3=tri.x3;
 		double y1=tri.y1, y2=tri.y2, y3=tri.y3;
-		double v1=tri.z1, v2=tri.z2, v3=tri.z3;
+		double z1=tri.z1, z2=tri.z2, z3=tri.z3;
 		if(Math.abs(y3-y2)<=1) {
-			if(Math.abs(y3-y1)<=1) { fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),42,42); }
-			else { fillTopTri(x2,x1,y1,x3,y3,v1,v2,v3); }
+			if(Math.abs(y3-y1)<=1) { // still isn't 100% accurate (needs more exhaustive cases) 
+				if(x1<x2&&x1<x3) { 
+					if(x2<x3) { fillLine(y1,x1,x3,z1,z3); }
+					else { fillLine(y1,x1,x2,z1,z2); }
+				}
+				else if(x2<x3&&x2<x1) {
+					if(x1<x3) { fillLine(y1,x2,x3,z2,z3); }
+					else { fillLine(y1,x2,x1,z2,z1); }
+				}
+				else {
+					if(z1<z2) { fillLine(y1,x3,x2,z3,z2); }
+					else { fillLine(y1,x3,x1,z3,z1); }
+				}
+				fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),z1,z2);
+			}
+			else { fillTopTri(x2,x1,y1,x3,y3,z1,z2,z3); }
 		}
-		else if(Math.abs(y2-y1)<=1) { fillBotTri(x2,x3,y3,y1,x1,v1,v2,v3);}
+		else if(Math.abs(y2-y1)<=1) { fillBotTri(x2,x3,y3,y1,x1,z1,z2,z3);}
 		else {
 			double x4 = x1 + ((x3-x1)*(y2-y1))/(y3-y1);
-			double v4 = v1 + ((v3-v1)*(y2-y1))/(y3-y1);
-			fillBotTri(x2,x4,y2,y1,x1,v1,v2,v4);
-			fillTopTri(x2,x4,y2,x3,y3,v4,v2,v3);
+			double v4 = z1 + ((z3-z1)*(y2-y1))/(y3-y1);
+			fillBotTri(x2,x4,y2,y1,x1,z1,z2,v4);
+			fillTopTri(x2,x4,y2,x3,y3,v4,z2,z3);
 		}
 	}
 }

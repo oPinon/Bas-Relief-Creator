@@ -18,13 +18,16 @@ public class RenderTest {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		System.out.println(Double.NEGATIVE_INFINITY);
-		MeshImport importer = new MeshImport("suzan.obj");
-		ArrayList<Triangle> triangles = importer.getRescaledMesh(1920, 1080);
-		TrianglePlot plotter = new TrianglePlot(new ZBuffer(1920,1080));
+		MeshImport importer = new MeshImport("untitled.obj");
+		long t0 = System.currentTimeMillis();
+		ArrayList<Triangle> triangles = importer.getRescaledMesh(1000, 1000);
+		TrianglePlot plotter = new TrianglePlot(new ZBuffer(1000,1000));
 		for(Triangle t : triangles) {
 			plotter.fillTriangle(t);
 		}
-		BufferedImage result = plotter.getZBuffer().getImage();
+		System.out.println("equalizing...");
+		BufferedImage result = plotter.getZBuffer().getEqualized(30);
+		System.out.println("rendered in "+(System.currentTimeMillis()-t0)+" ms");
 		ImageIO.write(result, "png", new File("render.png"));
 	}
 

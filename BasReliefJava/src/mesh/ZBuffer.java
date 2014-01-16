@@ -22,6 +22,29 @@ public class ZBuffer {
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
 
+	public BufferedImage getEqualized(int filterSize) {
+
+		Image toReturn = new Image(this.width,this.height);
+
+		int n = (2*filterSize+1)*(2*filterSize+1);
+
+		for(int x = filterSize; x<this.width-filterSize;x++){
+			for(int y = filterSize; y<this.height-filterSize;y++) {
+
+				int result = 0;
+				double value = get(x,y);
+
+				for(int i=-filterSize;i<=filterSize;i++){
+					for(int j=-filterSize;j<=filterSize;j++){
+						if(get(x+i, y+j)<value) { result++; }
+					}
+				}
+				toReturn.setCol(x, y, new RGB((result*255)/n,(result*255)/n,(result*255)/n));
+			}
+		}
+		return toReturn.getImage();
+	}
+
 	public BufferedImage getImage() {
 		double min = Double.POSITIVE_INFINITY;
 		double max = Double.NEGATIVE_INFINITY;

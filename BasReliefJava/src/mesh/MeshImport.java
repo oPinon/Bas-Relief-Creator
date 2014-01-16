@@ -99,7 +99,7 @@ public class MeshImport {
 			double y1 = height/2.0+scale*(t.y1-y0);
 			double y2 = height/2.0+scale*(t.y2-y0);
 			double y3 = height/2.0+scale*(t.y3-y0);	
-			toReturn.add(new Triangle(x1,y1,x2,y2,x3,y3,-t.z1,-t.z2,-t.z3));
+			toReturn.add(new Triangle(x1,y1,x2,y2,x3,y3,t.z1,t.z2,t.z3));
 		}
 		return toReturn;
 	}
