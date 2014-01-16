@@ -20,13 +20,13 @@ public class RenderTest {
 		System.out.println(Double.NEGATIVE_INFINITY);
 		MeshImport importer = new MeshImport("untitled.obj");
 		long t0 = System.currentTimeMillis();
-		ArrayList<Triangle> triangles = importer.getRescaledMesh(1000, 1000);
-		TrianglePlot plotter = new TrianglePlot(new ZBuffer(1000,1000));
+		ArrayList<Triangle> triangles = importer.getRescaledMesh(3000, 3000);
+		TrianglePlot plotter = new TrianglePlot(new ZBuffer(3000,3000));
 		for(Triangle t : triangles) {
 			plotter.fillTriangle(t);
 		}
 		System.out.println("equalizing...");
-		BufferedImage result = plotter.getZBuffer().getEqualized(30);
+		BufferedImage result = plotter.getZBuffer().getImage(importer.getMaxZ());
 		System.out.println("rendered in "+(System.currentTimeMillis()-t0)+" ms");
 		ImageIO.write(result, "png", new File("render.png"));
 	}

@@ -9,6 +9,7 @@ public class MeshImport {
 	private ArrayList<Triangle> mesh;
 	private File source;
 	private TreeMap<Integer,Vertex> vertices;
+	static double maxZ;
 
 	public MeshImport(String file) {
 
@@ -92,6 +93,7 @@ public class MeshImport {
 		double y0 = (minY+maxY)/2; double yRange = maxY-minY;
 		double scale = 0.95*Math.min(width/xRange, height/yRange);
 		ArrayList<Triangle> toReturn = new ArrayList<Triangle>();
+		maxZ=Double.NEGATIVE_INFINITY;
 		for(Triangle t : mesh) {
 			double x1 = width/2.0+scale*(t.x1-x0);
 			double x2 = width/2.0+scale*(t.x2-x0);
@@ -100,7 +102,11 @@ public class MeshImport {
 			double y2 = height/2.0+scale*(t.y2-y0);
 			double y3 = height/2.0+scale*(t.y3-y0);	
 			toReturn.add(new Triangle(x1,y1,x2,y2,x3,y3,t.z1,t.z2,t.z3));
+			double zMax = Math.max(t.z1, Math.max(t.z2, t.z3));
+			if(zMax>maxZ) { maxZ=zMax; }
 		}
 		return toReturn;
 	}
+	
+	public double getMaxZ() { return maxZ; }
 }

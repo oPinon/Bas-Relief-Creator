@@ -45,12 +45,12 @@ public class ZBuffer {
 		return toReturn.getImage();
 	}
 
-	public BufferedImage getImage() {
+	public BufferedImage getImage(double maxZ) {
 		double min = Double.POSITIVE_INFINITY;
-		double max = Double.NEGATIVE_INFINITY;
+		final double max = maxZ;
 		for(int i=0;i<buffer.length;i++) {
 			if(buffer[i]>Double.NEGATIVE_INFINITY) {
-				if(buffer[i]>max) { max = buffer[i]; }
+				//if(buffer[i]>max) { max = buffer[i]; }
 				if(buffer[i]<min) { min = buffer[i]; }
 			}
 		}

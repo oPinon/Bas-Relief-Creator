@@ -5,10 +5,14 @@ import java.awt.Graphics;
 public class TrianglePlot {
 
 	private ZBuffer buffer;
+	public Graphics g;
 
 	public TrianglePlot(ZBuffer buffer) {
 		this.buffer=buffer;;
 	}
+	
+	public TrianglePlot() {}
+	public void setGraphics(Graphics g) { this.g=g; }
 
 	public void plot(int x, int y, double value) {
 		if(value>buffer.get(x, y)) { buffer.set(x, y, value); }
