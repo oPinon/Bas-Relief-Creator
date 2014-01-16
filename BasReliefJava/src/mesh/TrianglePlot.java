@@ -4,17 +4,17 @@ import java.awt.Graphics;
 
 public class TrianglePlot {
 
-	private Graphics g;
+	private ZBuffer buffer;
 
-	public TrianglePlot(Graphics g) {
-		this.g=g;
+	public TrianglePlot(ZBuffer buffer) {
+		this.buffer=buffer;;
 	}
 
 	public void plot(int x, int y, double value) {
-		int alpha = Math.min(255, Math.max(0, (int) (10*value)));
-		g.setColor(new java.awt.Color(255,255,255,alpha));
-		g.drawRect(x, y, 1, 1);
+		if(value>buffer.get(x, y)) { buffer.set(x, y, value); }
 	}
+	
+	public ZBuffer getZBuffer() { return buffer; }
 
 	/*
 	 * plots a scanline from x1 with value v1, to x2 with value 2. (value is what we plot)
@@ -67,10 +67,9 @@ public class TrianglePlot {
 
 	public void fillTriangle(Triangle tri) {
 		tri.sortY();
-		System.out.println(tri.print());
 		double x1=tri.x1, x2=tri.x2, x3=tri.x3;
 		double y1=tri.y1, y2=tri.y2, y3=tri.y3;
-		double v1=tri.v1, v2=tri.v2, v3=tri.v3;
+		double v1=tri.z1, v2=tri.z2, v3=tri.z3;
 		if(Math.abs(y3-y2)<=1) {
 			if(Math.abs(y3-y1)<=1) { fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),42,42); }
 			else { fillTopTri(x2,x1,y1,x3,y3,v1,v2,v3); }

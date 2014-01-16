@@ -61,7 +61,10 @@ public class MeshImport {
 				face.add(vertices.get(Integer.parseInt(line)));
 				line = scan.next();
 			}
-			if(face.size()>2) mesh.add(new Triangle(100+100*face.get(0).getX(),200+100*face.get(0).getY(),100+100*face.get(1).getX(),200+100*face.get(1).getY(),100+100*face.get(2).getX(),200+100*face.get(2).getY(),10*Math.abs(face.get(0).getZ()),10*Math.abs(face.get(1).getZ()),10*Math.abs(face.get(2).getZ())));
+			if(face.size()>2) {
+				mesh.add(new Triangle(face.get(0).getX(),face.get(0).getY(),face.get(1).getX(),face.get(1).getY(),face.get(2).getX(),face.get(2).getY(),face.get(0).getZ(),face.get(1).getZ(),face.get(2).getZ()));
+				//System.out.println(face.get(0).getZ()+" "+face.get(1).getZ()+" "+face.get(2).getZ());
+			}
 			else System.out.println("End");
 		}
 		scan.close();
@@ -70,5 +73,34 @@ public class MeshImport {
 	
 	public ArrayList<Triangle> getMesh() {
 		return mesh;
+	}
+	
+	public ArrayList<Triangle> getRescaledMesh(int width, int height) {
+		double minX = Double.POSITIVE_INFINITY; double maxX = Double.NEGATIVE_INFINITY;
+		double minY = Double.POSITIVE_INFINITY; double maxY = Double.NEGATIVE_INFINITY;
+		for(Triangle t : mesh) {
+			final double Xmin = Math.min(t.x1, Math.min(t.x2, t.x3));
+			final double Xmax = Math.max(t.x1, Math.max(t.x2, t.x3));
+			final double Ymin = Math.min(t.y1, Math.min(t.y2, t.y3));
+			final double Ymax = Math.max(t.y1, Math.max(t.y2, t.y3));
+			if(Xmin<minX){minX=Xmin;}
+			if(Xmax>maxX){maxX=Xmax;}
+			if(Ymin<minY){minY=Ymin;}
+			if(Ymax>maxY){maxY=Ymax;}
+		}
+		double x0 = (minX+maxX)/2; double xRange = maxX-minX;
+		double y0 = (minY+maxY)/2; double yRange = maxY-minY;
+		double scale = 0.95*Math.min(width/xRange, height/yRange);
+		ArrayList<Triangle> toReturn = new ArrayList<Triangle>();
+		for(Triangle t : mesh) {
+			double x1 = width/2.0+scale*(t.x1-x0);
+			double x2 = width/2.0+scale*(t.x2-x0);
+			double x3 = width/2.0+scale*(t.x3-x0);
+			double y1 = height/2.0+scale*(t.y1-y0);
+			double y2 = height/2.0+scale*(t.y2-y0);
+			double y3 = height/2.0+scale*(t.y3-y0);	
+			toReturn.add(new Triangle(x1,y1,x2,y2,x3,y3,-t.z1,-t.z2,-t.z3));
+		}
+		return toReturn;
 	}
 }
