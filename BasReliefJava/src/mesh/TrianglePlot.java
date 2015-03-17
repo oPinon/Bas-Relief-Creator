@@ -90,9 +90,9 @@ public class TrianglePlot {
 				}
 				fillLine(y1,Math.min(x1, Math.min(x2, x3)),Math.max(x1, Math.max(x2, x3)),z1,z2);
 			}
-			else { fillTopTri(x2,x1,y1,x3,y3,z1,z2,z3); }
+			else {  fillBotTri(x2,x3,y3,y1,x1,z1,z2,z3); }
 		}
-		else if(Math.abs(y2-y1)<=1) { fillBotTri(x2,x3,y3,y1,x1,z1,z2,z3);}
+		else if(Math.abs(y2-y1)<=1) { fillTopTri(x2,x1,y1,x3,y3,z1,z2,z3); }
 		else {
 			double x4 = x1 + ((x3-x1)*(y2-y1))/(y3-y1);
 			double v4 = z1 + ((z3-z1)*(y2-y1))/(y3-y1);
